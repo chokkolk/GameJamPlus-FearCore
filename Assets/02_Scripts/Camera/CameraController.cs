@@ -35,8 +35,8 @@ public class CameraController : CinemachineExtension
 
                 Vector2 deltaInput = _inputManager.GetMouseDelta();
 
-                _startingRotation.x += deltaInput.x * verticalSpeed * Time.deltaTime;
-                _startingRotation.y += deltaInput.y * horizontalSpeed * Time.deltaTime;
+                _startingRotation.x += deltaInput.x * verticalSpeed * Time.fixedDeltaTime;
+                _startingRotation.y += deltaInput.y * horizontalSpeed * Time.fixedDeltaTime;
                 _startingRotation.y = Mathf.Clamp(_startingRotation.y, -clampAngle, clampAngle);
 
                 state.RawOrientation = Quaternion.Euler(-_startingRotation.y, _startingRotation.x, 0f);

@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
         }
 
         _playerControls = new PlayerControls();
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -59,7 +59,8 @@ public class InputManager : MonoBehaviour
         return _playerControls.Player.Crouch.IsPressed();
     }
 
-    public bool IsPlayerInteracting()
+
+    public bool WasPlayerInteracted()
     {
         return _playerControls.Player.Interact.WasPressedThisFrame();
     }
