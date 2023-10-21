@@ -25,11 +25,11 @@ public class ItemCollider : MonoBehaviour
         {
             if(this.tag == "KeyTag")
             {
-                _playerItems.TotalKey += 1;                
+                _playerItems.KeysCollected += 1;                
             }   
             else if(this.tag == "MedkitTag")
             {
-                _playerItems.TotalMedkit += 1;
+                _playerItems.MedkitsCollected += 1;
             }
 
             Destroy(gameObject);
@@ -42,6 +42,16 @@ public class ItemCollider : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             _isPlayerDetected = true;
+
+            if (this.tag == "KeyTag")
+            {
+                _interactionUI.SetTextUI("Pressione (E) para coletar a chave.");
+            }
+            else
+            {
+                _interactionUI.SetTextUI("Pressione (E) para coletar a cura.");
+            }
+
             _interactionUI.SetActiveUI(true);
         }
     }

@@ -8,19 +8,19 @@ public class PlayerItems : MonoBehaviour
     public int MedkitMaxLimit { get; private set; } = 1;
 
     // Key
-    [SerializeField] private int _totalKey;
-    public int TotalKey
+    [SerializeField] private int _keysCollected;
+    public int KeysCollected
     {
-        get => _totalKey;
-        set => _totalKey = CheckLimitItem(value, KeyMaxLimit);
+        get => _keysCollected;
+        set => _keysCollected = CheckLimitItem(value, KeyMaxLimit);
     }
 
     // Water
-    [SerializeField] private int _totalMedkit;
-    public int TotalMedkit
+    [SerializeField] private int _medkitsCollected;
+    public int MedkitsCollected
     {
-        get => _totalMedkit;
-        set => _totalMedkit = CheckLimitItem(value, MedkitMaxLimit);
+        get => _medkitsCollected;
+        set => _medkitsCollected = CheckLimitItem(value, MedkitMaxLimit);
     }
 
     private int CheckLimitItem(int value, float maxLimit)

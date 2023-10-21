@@ -11,32 +11,30 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerItems PlayerItems;
     public InputManager InputManager;
-    
-    [SerializeField]
-    private float _walkSpeed = 3.0f;
-    [SerializeField]
-    private float _crouchSpeed = 1.5f;
-    [SerializeField]
-    private float _runSpeed = 5.0f;
-    
-    [SerializeField]
-    private float _standHeight = 0.7f;
-    [SerializeField]
-    private float _crouchHeight = -0.2f;
-
-    [SerializeField]
-    private GameObject playerHead;
-
-    [SerializeField]
-    private DeadUI _deadUI;
-
-    protected bool _isRunning;
-    protected bool _isCrouching;
-    public bool WasInterectedWithItem;
-    protected bool _closeToItem;
 
     public bool IsDead;
     public bool IsRespawned;
+    public bool WasInterectedWithItem;
+
+    [SerializeField] private float _walkSpeed = 3.0f;
+    [SerializeField] private float _crouchSpeed = 1.5f;
+    [SerializeField] private float _runSpeed = 5.0f;
+                     
+    [SerializeField]  private float _standHeight = 0.7f;
+    [SerializeField] private float _crouchHeight = -0.2f;
+                     
+    [SerializeField]  private GameObject playerHead;
+                     
+    [SerializeField] private DeadUI _deadUI;
+    [SerializeField] private ItemsContainerUI _itemsContainerUI;
+
+    [SerializeField] private GameObject _brotherPrefab;
+    [SerializeField] private GameObject _sisterPrefab;
+    [SerializeField] private GameObject _keyPrefab;
+
+    protected bool _isRunning;
+    protected bool _isCrouching;
+    protected bool _closeToItem;
 
     private float _actualSpeed;
     private bool groundedPlayer;
@@ -155,13 +153,17 @@ public class PlayerController : MonoBehaviour
     {
         IsDead = true;
 
+        _fadeUtil.FadeIn();
+
+        GameObject actualPlayerPrefab = _actualPlayerType == PlayerType.Brother ? _brotherPrefab : _sisterPrefab;
+
+        InstantiateObjects(actualPlayerPrefab);
+
         _respawnManager.SetPlayerTypeAvailability(_actualPlayerType, false);
 
         _actualPlayerType = _respawnManager.GetNextPlayerTypeAvailable().Value;
 
         //TODO: implementar logica de quando o player type for NONE
-
-        _fadeUtil.FadeIn();
 
         _deadUI.SetActiveUI(true);
         //TODO: implementar respawn
@@ -169,7 +171,7 @@ public class PlayerController : MonoBehaviour
         Respawn();
     }
 
-    public void Respawn()
+    private void Respawn()
     {
         Respawn nextRespawn = _respawnManager.GetRespawnByPlayerType(_actualPlayerType);
 
@@ -178,9 +180,26 @@ public class PlayerController : MonoBehaviour
         Invoke(nameof(SetRespawn), 1); 
     }
 
-    public void SetRespawn()
+    // NÃO EXCLUIR ESTE MÉTODO, POIS ELE GARANTE QUE O PLAYER INTANCIA NO RESPAWN ANTES 
+    //  DO "CharacterController" CONTROLAR A POSIÇÃO DO PLAYER.
+    private void SetRespawn()
     {
         IsRespawned = true;
+    }
+
+    private void InstantiateObjects(GameObject actualPlayerPrefab)
+    {
+        Instantiate(actualPlayerPrefab, this.transform.position, this.transform.rotation);
+
+        Vector3 keyRespawnPosition = this.transform.position + new Vector3(0f, 3f, 0f);
+
+        for (int i= 0; i < PlayerItems.KeysCollected; i++)
+        {
+            Instantiate(_keyPrefab, keyRespawnPosition, this.transform.rotation);
+        }
+
+        PlayerItems.KeysCollected = 0;
+        PlayerItems.MedkitsCollected = 0;
     }
     #endregion
 }

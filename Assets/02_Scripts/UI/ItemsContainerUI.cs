@@ -10,7 +10,6 @@ public class ItemsContainerUI : MonoBehaviour
 
     private PlayerItems _playerItems;
 
-
     private void Awake()
     {
         _playerItems = FindObjectOfType<PlayerItems>();
@@ -20,16 +19,30 @@ public class ItemsContainerUI : MonoBehaviour
 
     private void Update()
     {
-        for(int i = 0; i < _playerItems.TotalKey; i++)
+        if (_playerItems.KeysCollected == 0)
         {
-            _keysUI[i].ItemImage.color = new Color(_keysUI[i].ItemImage.color.r, _keysUI[i].ItemImage.color.g, _keysUI[i].ItemImage.color.b, 1f);
-            _keysUI[i].BounceUtil.Bounce();
-        } 
-        
-        for(int i = 0; i < _playerItems.TotalMedkit; i++)
+            ResetKeysUI();
+        }
+        else
         {
-            _medkitsUI[i].ItemImage.color = new Color(_medkitsUI[i].ItemImage.color.r, _medkitsUI[i].ItemImage.color.g, _medkitsUI[i].ItemImage.color.b, 1f);
-            _medkitsUI[i].BounceUtil.Bounce();
+            for (int i = 0; i < _playerItems.KeysCollected; i++)
+            {
+                _keysUI[i].ItemImage.color = new Color(_keysUI[i].ItemImage.color.r, _keysUI[i].ItemImage.color.g, _keysUI[i].ItemImage.color.b, 1f);
+                _keysUI[i].BounceUtil.Bounce();
+            }
+        }
+
+        if (_playerItems.MedkitsCollected == 0)
+        {
+            ResetMedkitsUI();
+        }
+        else
+        {
+            for (int i = 0; i < _playerItems.MedkitsCollected; i++)
+            {
+                _medkitsUI[i].ItemImage.color = new Color(_medkitsUI[i].ItemImage.color.r, _medkitsUI[i].ItemImage.color.g, _medkitsUI[i].ItemImage.color.b, 1f);
+                _medkitsUI[i].BounceUtil.Bounce();
+            }
         }
     }
 
