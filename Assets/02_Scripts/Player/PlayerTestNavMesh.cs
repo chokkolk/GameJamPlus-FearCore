@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshEnemy : MonoBehaviour
+public class PlayerTestNavMesh : MonoBehaviour
 {
     public VisionCone script;
     public Transform player;
     public Transform[] waypoint;
     private NavMeshAgent agent;
-    private int index;
+    private int index = 0;
 
     void Start()
     {
@@ -19,7 +19,8 @@ public class NavMeshEnemy : MonoBehaviour
 
     void Update()
     {
-        if (agent.remainingDistance < 1) {
+        if (agent.remainingDistance < 1)
+        {
             agent.SetDestination(waypoint[index].position);
             if (index >= waypoint.Length - 1) index = 0;
             else index++;
@@ -27,10 +28,9 @@ public class NavMeshEnemy : MonoBehaviour
 
         if (script.hunt == true)
         {
-            agent.SetDestination(player.position);
-            agent.speed = 9;
+            agent.speed = 14;
         }
-        else agent.speed = 6;
+        else agent.speed = 10;
 
     }
 }
