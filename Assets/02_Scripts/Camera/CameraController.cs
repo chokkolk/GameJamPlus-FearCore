@@ -15,16 +15,18 @@ public class CameraController : CinemachineExtension
 
     private InputManager _inputManager;
     private Vector3 _startingRotation;
+    private PlayerController _playerController;
 
     protected override void Awake()
     {
         _inputManager = InputManager.Instance;
+        _playerController = FindObjectOfType<PlayerController>();
         base.Awake();
     }
 
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
-        if (vcam.Follow && _inputManager != null)
+        if (vcam.Follow && _inputManager != null && !_playerController.IsDead)
         {
             if(stage == CinemachineCore.Stage.Aim)
             {

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5439461514188000359}
   - component: {fileID: 1303846389732138864}
   - component: {fileID: 590777604308639436}
+  - component: {fileID: 442064752637725569}
+  - component: {fileID: 878346126702043164}
   m_Layer: 0
   m_Name: ItemUI
   m_TagString: ItemUI
@@ -75,3 +77,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &442064752637725569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799505589793369002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2634fb8e1af3a4da4fdfe86b45bbe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BounceDuration: 1
+  BounceMaxScale: 1.5
+  ScaleEase: 27
+--- !u!114 &878346126702043164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799505589793369002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0a22700f3f9547906f9a2623141ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemImage: {fileID: 590777604308639436}
+  BounceUtil: {fileID: 442064752637725569}

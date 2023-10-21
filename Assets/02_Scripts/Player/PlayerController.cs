@@ -4,13 +4,14 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using static RespawnManager;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     public PlayerItems PlayerItems;
     public InputManager InputManager;
-
+    
     [SerializeField]
     private float _walkSpeed = 3.0f;
     [SerializeField]
@@ -27,12 +28,15 @@ public class PlayerController : MonoBehaviour
     private GameObject playerHead;
 
     [SerializeField]
-    private GameObject _interactionUI;
+    private DeadUI _deadUI;
 
     protected bool _isRunning;
     protected bool _isCrouching;
     public bool WasInterectedWithItem;
     protected bool _closeToItem;
+
+    public bool IsDead;
+    public bool IsRespawned;
 
     private float _actualSpeed;
     private bool groundedPlayer;
@@ -41,6 +45,10 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _controller;
     private Transform _cameraTransform;
+    private FadeUtil _fadeUtil;
+    private RespawnManager _respawnManager;
+
+    private PlayerType _actualPlayerType;
 
     private void Start()
     {
@@ -50,6 +58,15 @@ public class PlayerController : MonoBehaviour
 
         _actualSpeed = _walkSpeed;
         PlayerItems = GetComponent<PlayerItems>();
+        
+        _fadeUtil = FindObjectOfType<FadeUtil>();
+        _deadUI = FindObjectOfType<DeadUI>();
+
+        _respawnManager = FindObjectOfType<RespawnManager>();
+                                     
+        _actualPlayerType = PlayerType.Brother;
+
+        Respawn();
     }
 
     void Update()
@@ -61,7 +78,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovementAction();
+        if(!IsDead && IsRespawned)
+        {
+            MovementAction();
+        }
     }
 
     #region Movement Actions
@@ -125,54 +145,42 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region Interaction Actions
+    #region Dead Actions
+    public void SetDead(bool isDead)
+    {
+        IsDead = isDead;
+    }
 
-    //private void OnPlayerInteracted()
-    //{
-    //    if (!WasInterectedWithItem &&
-    //        _closeToItem &&
-    //        InputManager.WasPlayerInteracted())
-    //    {
-    //        WasInterectedWithItem = true;
-    //    }
-    //}
+    public void OnDead()
+    {
+        IsDead = true;
 
-    //private void OnInteraction(GameObject gameObject)
-    //{
-    //    gameObject.SetActive(false);
-    //    WasInterectedWithItem = false;
-    //    _closeToItem = false;
+        _respawnManager.SetPlayerTypeAvailability(_actualPlayerType, false);
 
-    //    _interactionUI.SetActive(false);
-    //}
+        _actualPlayerType = _respawnManager.GetNextPlayerTypeAvailable().Value;
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.tag == _itemTag)
-    //    {
-    //        if (WasInterectedWithItem)
-    //        {
-    //            OnInteraction(other.gameObject);
-    //        }
-    //    }
-    //}
+        //TODO: implementar logica de quando o player type for NONE
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == _itemTag)
-    //    {
-    //        _closeToItem = true;
-    //        _interactionUI.SetActive(true);
-    //    }
-    //}
+        _fadeUtil.FadeIn();
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.tag == _itemTag)
-    //    {
-    //        _closeToItem = false;
-    //        _interactionUI.SetActive(false);
-    //    }
-    //}
+        _deadUI.SetActiveUI(true);
+        //TODO: implementar respawn
+
+        Respawn();
+    }
+
+    public void Respawn()
+    {
+        Respawn nextRespawn = _respawnManager.GetRespawnByPlayerType(_actualPlayerType);
+
+        this.transform.position = nextRespawn.transform.position;
+
+        Invoke(nameof(SetRespawn), 1); 
+    }
+
+    public void SetRespawn()
+    {
+        IsRespawned = true;
+    }
     #endregion
 }
