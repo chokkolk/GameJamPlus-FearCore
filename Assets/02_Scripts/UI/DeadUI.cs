@@ -13,6 +13,11 @@ public class DeadUI : MonoBehaviour
 
     public void SetActiveUI(bool active)
     {
+        if (active == false)
+        {
+            Cursor.visible = false;
+        }
+
         _deadUIGameObject.SetActive(active);
     }
 }

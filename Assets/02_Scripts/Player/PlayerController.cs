@@ -69,6 +69,9 @@ public class PlayerController : MonoBehaviour
         _actualPlayerType = _actualPlayerType == PlayerType.None ? PlayerType.Brother : _actualPlayerType;
 
         Respawn();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Update()
@@ -170,6 +173,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnDead()
     {
+        Cursor.visible = true;
+
         IsDead = true;
 
         _fadeUtil.FadeIn();
