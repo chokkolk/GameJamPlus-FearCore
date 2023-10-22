@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _walkSpeed = 3.0f;
     [SerializeField] private float _crouchSpeed = 1.5f;
     [SerializeField] private float _runSpeed = 5.0f;
+    [SerializeField] public float _stamina = 100.0f;
+    [SerializeField] private float decreaseStaminaSpeed = 10f;
+    [SerializeField] private float increaseStaminaSpeed = 10f;
                      
     [SerializeField]  private float _standHeight = 0.7f;
     [SerializeField] private float _crouchHeight = -0.2f;
@@ -107,8 +110,13 @@ public class PlayerController : MonoBehaviour
 
     private void RunAction()
     {
-        if (InputManager.IsPlayerRunning())
+        if (InputManager.IsPlayerRunning() && _stamina > 0)
         {
+            if (_stamina > 0f)
+            {
+                _stamina -= 1f * Time.deltaTime * decreaseStaminaSpeed;
+            }
+
             _actualSpeed = _runSpeed;
             _isRunning = true;
         }
@@ -116,8 +124,18 @@ public class PlayerController : MonoBehaviour
         {
             _actualSpeed = _walkSpeed;
             _isRunning = false;
+
+            if (_stamina < 100f)
+            {
+                _stamina += 1f * Time.deltaTime * increaseStaminaSpeed;
+            }
         }
-    }     
+    }    
+    
+    //private IEnumerator OnRecoveryStamina()
+    //{
+    //    _stamina -= 1f * Time.deltaTime * decreaseStaminaSpeed;
+    //}
 
     private void CrouchAction()
     {
