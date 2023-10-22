@@ -30,6 +30,8 @@ public class CharacterCollider : MonoBehaviour
 
             PlayerType pType = _playerController._actualPlayerType == PlayerType.Brother ? PlayerType.Sister : PlayerType.Brother;
 
+            _respawnManager.SetPlayerTypeAvailability(pType, true);
+
             Respawn respawn = _respawnManager.GetRespawnByPlayerType(pType);
             
             Instantiate(this, respawn.transform.position, respawn.transform.rotation);

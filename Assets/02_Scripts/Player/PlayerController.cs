@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public bool WasInterectedWithItem;
 
     public PlayerType _actualPlayerType;
+    private PlayerType _previusPlayerType;
 
     [SerializeField] private float _walkSpeed = 3.0f;
     [SerializeField] private float _crouchSpeed = 1.5f;
@@ -172,6 +173,8 @@ public class PlayerController : MonoBehaviour
         IsDead = true;
 
         _fadeUtil.FadeIn();
+
+        _previusPlayerType = _actualPlayerType;
 
         GameObject actualPlayerPrefab = _actualPlayerType == PlayerType.Brother ? _brotherPrefab : _sisterPrefab;
 
