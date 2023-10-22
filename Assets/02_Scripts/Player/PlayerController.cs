@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public bool IsRespawned;
     public bool WasInterectedWithItem;
 
+    public PlayerType _actualPlayerType;
+
     [SerializeField] private float _walkSpeed = 3.0f;
     [SerializeField] private float _crouchSpeed = 1.5f;
     [SerializeField] private float _runSpeed = 5.0f;
@@ -46,8 +48,6 @@ public class PlayerController : MonoBehaviour
     private FadeUtil _fadeUtil;
     private RespawnManager _respawnManager;
 
-    private PlayerType _actualPlayerType;
-
     private void Start()
     {
         _controller = gameObject.GetComponent<CharacterController>();
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
         _respawnManager = FindObjectOfType<RespawnManager>();
                                      
-        _actualPlayerType = PlayerType.Brother;
+        _actualPlayerType = _actualPlayerType == PlayerType.None ? PlayerType.Brother : _actualPlayerType;
 
         Respawn();
     }
