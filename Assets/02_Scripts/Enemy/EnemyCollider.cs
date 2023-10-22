@@ -11,9 +11,9 @@ public class EnemyCollider : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             _playerController.OnDead();
         }

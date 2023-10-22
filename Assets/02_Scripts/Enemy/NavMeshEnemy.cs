@@ -28,9 +28,9 @@ public class NavMeshEnemy : MonoBehaviour
         if (script.hunt == true)
         {
             agent.SetDestination(player.position);
-            agent.speed = 9;
+            agent.speed = 5;
         }
-        else agent.speed = 6;
+        else agent.speed = 2;
 
     }
 }
